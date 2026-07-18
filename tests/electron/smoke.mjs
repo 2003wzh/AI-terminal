@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { createHash } from 'node:crypto'
 import { createServer } from 'node:http'
 import { createRequire } from 'node:module'
@@ -8,16 +8,18 @@ import { tmpdir } from 'node:os'
 import { fileURLToPath } from 'node:url'
 
 import { _electron as electron } from 'playwright'
+import { resolveSmokeArtifactPaths } from './smoke-paths.mjs'
 
 const require = createRequire(import.meta.url)
 const electronPath = require('electron')
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), '../..')
-const authScreenshotPath = resolve(rootDir, '../../design/electron-real-login-1440.png')
-const screenshotPath = resolve(rootDir, '../../design/electron-real-1440.png')
-const openerScreenshotPath = resolve(rootDir, '../../design/electron-real-openers-1440.png')
-const userCenterScreenshotPath = resolve(rootDir, '../../design/electron-real-user-center-1440.png')
-const settingsScreenshotPath = resolve(rootDir, '../../design/electron-real-settings-1440.png')
-const configurationScreenshotPath = resolve(rootDir, '../../design/electron-real-settings-configuration-1440.png')
+const smokeArtifacts = resolveSmokeArtifactPaths(rootDir)
+const authScreenshotPath = smokeArtifacts.auth
+const screenshotPath = smokeArtifacts.workspace
+const openerScreenshotPath = smokeArtifacts.openers
+const userCenterScreenshotPath = smokeArtifacts.userCenter
+const settingsScreenshotPath = smokeArtifacts.settings
+const configurationScreenshotPath = smokeArtifacts.configuration
 const fakeCredential = 'electron-smoke-chat-key-never-return'
 const relayModelCredential = 'sk-electron-smoke-relay-key-never-return'
 const relayCredentialNonce = `${Date.now().toString(36)}_${process.pid}`
@@ -42,6 +44,7 @@ const agentEditRevision = createHash('sha256')
 const temporaryWorkspacePath = await mkdtemp(
   join(tmpdir(), 'onekey-electron-agent-smoke-')
 )
+await mkdir(smokeArtifacts.directory, { recursive: true })
 await writeFile(
   join(temporaryWorkspacePath, agentInputFile),
   `${agentInputMarker}\nBearer ${fakeCredential}\nPrivate path: ${fakeAbsolutePath}\n`,

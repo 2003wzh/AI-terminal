@@ -17,7 +17,7 @@ AI终点站是一个面向 Windows 的 Electron + React + TypeScript AI 工作�
 
 ## 开发
 
-需要 Windows 10/11 x64、Node.js 22 和 npm。
+运行客户端需要 Windows 10/11 x64、Node.js 22 和 npm。
 
 ```powershell
 npm ci
@@ -30,7 +30,12 @@ npm run dev
 npm run dev:web
 ```
 
+此模式没有 Electron Main/Preload，也不会连接模型或执行 Chat/Agent；完整功能请使用 `npm run dev`。
+
 ## 测试
+
+完整测试另外需要 Python 3 和 Microsoft Edge。也可以通过
+`PLAYWRIGHT_BROWSER_CHANNEL` 指定已安装的 Playwright 浏览器通道。
 
 ```powershell
 npm run test:all
@@ -67,6 +72,8 @@ tests/
 ## 默认中转站
 
 默认产品配置连接 `https://www.wzhxiaozhan.top`，模型入口为 `/v1`。这不是硬性协议限制；其他 OpenAI-compatible HTTPS endpoint 必须先由用户确认精确地址，随后才会请求模型目录或发送对话。
+
+本仓库不包含中转站或网站服务端源码。登录、账户、额度、令牌、模型目录和在线 Chat/Agent 均依赖上述远端服务及其公开客户端协议；服务端不可用时，客户端会保持可操作的错误与重试状态，不会伪造在线数据。
 
 ## 安全
 

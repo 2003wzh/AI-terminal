@@ -1,11 +1,11 @@
-import { existsSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { defineConfig } from '@playwright/test'
 
-const edgePath = 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe'
 const rootDir = fileURLToPath(new URL('.', import.meta.url))
+const browserChannel = process.env.PLAYWRIGHT_BROWSER_CHANNEL?.trim() ||
+  (process.platform === 'win32' ? 'msedge' : undefined)
 
 export default defineConfig({
   testDir: resolve(rootDir, 'tests/e2e'),
@@ -19,7 +19,7 @@ export default defineConfig({
     locale: 'zh-CN',
     screenshot: 'only-on-failure',
     trace: 'retain-on-failure',
-    ...(existsSync(edgePath) ? { launchOptions: { executablePath: edgePath } } : {})
+    ...(browserChannel ? { channel: browserChannel } : {})
   },
   webServer: {
     command: 'npx vite --config vite.renderer.config.ts --host 127.0.0.1 --port 4173',
