@@ -1,0 +1,161 @@
+.task-row-shell {
+  position: relative;
+  min-width: 0;
+}
+
+.task-row-shell .task-row {
+  padding-right: 34px;
+}
+
+.task-row-actions-trigger {
+  position: absolute;
+  z-index: 2;
+  top: 4px;
+  right: 4px;
+  display: grid;
+  width: 23px;
+  height: 23px;
+  place-items: center;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.52);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease, background 120ms ease, border-color 120ms ease;
+}
+
+.task-row-shell:hover .task-row-actions-trigger,
+.task-row-shell:focus-within .task-row-actions-trigger,
+.task-row-actions-trigger[aria-expanded="true"] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.task-row-actions-trigger:hover:not(:disabled),
+.task-row-actions-trigger:focus-visible {
+  border-color: rgba(255, 255, 255, 0.14);
+  outline: 0;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.045);
+}
+
+.task-row-actions-trigger:disabled {
+  cursor: not-allowed;
+  opacity: 0.28;
+}
+
+.task-history-menu {
+  position: fixed;
+  z-index: 320;
+  display: grid;
+  width: 176px;
+  gap: 2px;
+  padding: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 10px;
+  background: rgba(16, 20, 29, 0.94);
+  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.045);
+  backdrop-filter: blur(20px) saturate(1.14);
+  -webkit-backdrop-filter: blur(20px) saturate(1.14);
+}
+
+.task-history-menu button {
+  display: grid;
+  height: 34px;
+  grid-template-columns: 16px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  padding: 0 9px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 12px;
+  text-align: left;
+}
+
+.task-history-menu button:hover,
+.task-history-menu button:focus-visible {
+  border-color: rgba(255, 255, 255, 0.1);
+  outline: 0;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.task-history-menu button.danger {
+  color: #ffaaa4;
+}
+
+.task-history-menu button.danger:hover,
+.task-history-menu button.danger:focus-visible {
+  border-color: rgba(255, 107, 107, 0.18);
+  background: rgba(255, 107, 107, 0.1);
+  color: #ffd2cf;
+}
+
+.archived-composer-notice {
+  display: flex;
+  min-height: 30px;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 10px 0;
+  padding: 6px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.045);
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 11px;
+  line-height: 16px;
+}
+
+.archived-composer-notice svg {
+  flex: 0 0 auto;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.delete-conversation-confirm {
+  border-color: rgba(255, 107, 107, 0.18);
+}
+
+.delete-confirm-icon {
+  background: rgba(255, 107, 107, 0.1);
+  color: #ff8f88;
+}
+
+.delete-conversation-name {
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.88) !important;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.delete-dialog-error {
+  color: #ffaaa4 !important;
+}
+
+.access-confirm-actions .confirm-delete {
+  border-color: rgba(255, 107, 107, 0.34);
+  background: rgba(255, 107, 107, 0.14);
+  color: #ffd2cf;
+}
+
+.access-confirm-actions .confirm-delete:hover:not(:disabled) {
+  border-color: rgba(255, 107, 107, 0.5);
+  background: rgba(255, 107, 107, 0.22);
+}
+
+@media (hover: none) {
+  .task-row-actions-trigger {
+    opacity: 0.72;
+    pointer-events: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .task-row-actions-trigger {
+    transition: none;
+  }
+}

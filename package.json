@@ -1,0 +1,94 @@
+{
+  "name": "ai-terminal-electron",
+  "version": "0.1.2",
+  "private": true,
+  "description": "AI终点站 Electron + React 智能工作区",
+  "author": "AI终点站",
+  "main": "./out/main/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "dev:web": "vite --config vite.renderer.config.ts --host 127.0.0.1",
+    "preview": "electron-vite preview",
+    "typecheck": "tsc -p tsconfig.node.json --noEmit && tsc -p tsconfig.web.json --noEmit",
+    "test:runtime": "node --experimental-strip-types --test tests/runtime/protocol.test.ts tests/runtime/turn-registry.test.ts tests/runtime/pending-turn-starts.test.ts tests/runtime/desktop-lifecycle.test.ts tests/runtime/user-data-path.test.ts tests/runtime/smooth-text-stream.test.ts && python tests/runtime/mock_sidecar_selftest.py",
+    "test:security": "node --experimental-strip-types --test tests/security/security.test.ts tests/security/secure-store.test.ts tests/security/access-profile-service.test.ts tests/security/consent-store.test.ts tests/security/endpoint-consent-coordinator.test.ts tests/security/conversation-history-service.test.ts tests/security/agent-event-validator.test.ts tests/security/selection-token-store.test.ts tests/security/workspace-launch-token-store.test.ts tests/security/agent-approval-service.test.ts tests/security/capability-grant-store.test.ts tests/security/project-init-service.test.ts",
+    "test:services": "node --experimental-strip-types --test tests/services/model-catalog.test.ts tests/services/responses-client.test.ts tests/services/attachment-input-service.test.ts tests/services/image-result-store.test.ts tests/services/chat-turn-service.test.ts tests/services/workspace-tool-service.test.ts tests/services/workspace-opener-service.test.ts tests/services/agent-turn-service.test.ts tests/services/capability-registry.test.ts",
+    "test:relay": "node --experimental-strip-types --test tests/relay/relay-service.test.ts tests/relay/relay-credential-storage.test.ts tests/relay/relay-dto-adapter.test.ts tests/relay/relay-identity.test.ts tests/relay/quota-format.test.ts",
+    "test:e2e": "playwright test",
+    "test:electron": "npm run build && node tests/electron/smoke.mjs",
+    "test": "npm run test:security && npm run test:services && npm run test:runtime && npm run test:relay",
+    "test:all": "npm test && npm run test:e2e && npm run test:electron",
+    "build": "npm run typecheck && electron-vite build",
+    "pack": "npm run build && electron-builder --dir",
+    "dist": "npm run build && electron-builder"
+  },
+  "dependencies": {
+    "@monaco-editor/react": "4.7.0",
+    "@xterm/addon-fit": "0.11.0",
+    "@xterm/xterm": "6.0.0",
+    "lucide-react": "1.24.0",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "react-markdown": "10.1.0",
+    "react-resizable-panels": "3.0.6",
+    "rehype-sanitize": "6.0.0",
+    "remark-gfm": "4.0.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.61.1",
+    "@types/node": "24.10.13",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "5.1.4",
+    "electron": "43.1.1",
+    "electron-builder": "26.15.3",
+    "electron-vite": "5.0.0",
+    "typescript": "7.0.2",
+    "vite": "7.3.6"
+  },
+  "overrides": {
+    "dompurify": "3.4.12"
+  },
+  "build": {
+    "appId": "com.wzhxiaozhan.ai-terminal",
+    "productName": "AI终点站",
+    "artifactName": "AI-Terminal-${version}-${arch}.${ext}",
+    "directories": {
+      "buildResources": "resources",
+      "output": "electron_publish"
+    },
+    "files": [
+      "out/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "resources/app.ico",
+        "to": "app.ico"
+      },
+      {
+        "from": "src/renderer/CODEXMONITOR_LICENSE.txt",
+        "to": "licenses/CODEXMONITOR_LICENSE.txt"
+      }
+    ],
+    "asar": true,
+    "win": {
+      "executableName": "AI-Terminal",
+      "icon": "resources/app.ico",
+      "target": [
+        "portable",
+        "nsis",
+        "zip"
+      ]
+    },
+    "nsis": {
+      "artifactName": "AI-Terminal-Electron-Setup-${version}-${arch}.${ext}",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "AI终点站"
+    }
+  }
+}
